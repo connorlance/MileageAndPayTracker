@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <header>
+      <div id="test">
+        <h1>Options</h1>
+      </div>
+    </header>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <main>
+      <form>
+        <div><input type="text" placeholder="New Company |" /></div>
+        <div><input type="submit" value="Add" /></div>
+      </form>
+
+      <form>
+        <div>
+          <select>
+            <option value="">Select Company</option>
+          </select>
+        </div>
+        <div><input type="submit" value="Remove" /></div>
+      </form>
+
+      <label for="multipleInputForms">Use Multiple Input Forms</label><br />
+      <input type="checkbox" id="multipleInputForms" value="Use multiple input forms" />
+    </main>
+
+    <footer></footer>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <header>
+      <div id="test">
+        <h1>Mileage and Pay Calculator</h1>
+      </div>
+    </header>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <main>
+      <div id="sortButtons1">
+        <span>sort:</span>
+        <button onclick="filterContent('all')">All</button>
+        <button onclick="filterContent('type1')">Doordash</button>
+        <button onclick="filterContent('type2')">UberEats</button>
+      </div>
+
+      <div id="columnNames1">
+        <span>date:</span>
+        <span>Total Miles:</span>
+        <span>Total Pay:</span>
+        <span>AVG Pay Per Mile:</span>
+      </div>
+
+      <div id="dailyInfoForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="mileageStart">Mileage Start:</label>
+        <input type="number" id="mileageStart" name="mileageStart" required />
+
+        <label for="mileageEnd">Mileage End:</label>
+        <input type="number" id="mileageEnd" name="mileageEnd" required />
+
+        <label for="pay">Pay:</label>
+        <input type="number" id="pay" name="pay" required />
+
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required />
+
+        <button type="submit">Submit</button>
+      </div>
+
+      <div id="sortButtons2">
+        <span>sort:</span>
+        <button onclick="filterContent('all')">All</button>
+        <button onclick="filterContent('type1')">Doordash</button>
+        <button onclick="filterContent('type2')">UberEats</button>
+      </div>
+
+      <div id="columnNames2">
+        <span>date:</span>
+        <span>MileageStart:</span>
+        <span>MileageEnd:</span>
+        <span>Total Miles:</span>
+        <span>Company:</span>
+        <span>Total Pay:</span>
+      </div>
+    </main>
+
+    <footer></footer>
+  </body>
+</html>
