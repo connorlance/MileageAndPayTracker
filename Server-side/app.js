@@ -4,6 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const multer = require("multer");
 const { body, validationResult } = require("express-validator");
+const moment = require("moment-timezone");
 const query = require("./queries.js");
 
 //Create express app
@@ -26,13 +27,8 @@ app.listen(3000);
 //Middleware: logging
 app.use(morgan("dev"));
 
-//Route: index
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
 //Middleware: daily info form input validation
-const validateDailyInfoForm = [
+const validateForm = [
   body("date").toDate().isISO8601(),
   body("mileageStart").toFloat().isNumeric(),
   body("mileageEnd").toFloat().isNumeric(),
@@ -42,8 +38,13 @@ const validateDailyInfoForm = [
     .customSanitizer((value) => value.replace(/[<>&$%?.*;'"`\\/]/g, "")),
 ];
 
+//Route: index
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
 //Route: daily info form
-app.post("/dailyInfoForm", validateDailyInfoForm, (req, res) => {
+app.post("/dailyInfoForm", validateForm, (req, res) => {
   /*Check for validation errors*/
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -52,10 +53,13 @@ app.post("/dailyInfoForm", validateDailyInfoForm, (req, res) => {
 
   /*Process form data */
   const formData = req.body;
+  formData.date = moment.utc(formData.date).format("YYYY-MM-DD");
   console.log(formData);
 
   /*Insert form data into database */
-  query.insertDailyInfoForm(formData.date, formData.mileageStart, formData.mileageEnd, formData.pay, formData.company);
+  query.insert_mileage_and_pay(formData.date, formData.mileageStart, formData.mileageEnd, formData.pay, formData.company);
+
+  query.daily_total_avg_calculation();
 });
 
 //Route: options
