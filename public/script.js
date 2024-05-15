@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Validate form inputs
     if (validateForm()) {
       const formData = new FormData(this);
+
       fetch("/dailyInfoForm", {
         method: "POST",
         body: formData,
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(data);
         })
         .catch((err) => console.error("Error: ", err));
+      dailyInfoForm.reset();
     }
   });
 });
@@ -41,10 +43,8 @@ function validateForm() {
   // No invalid characters
   const invalidCharacters = /[<>&$%?.*;'"`\\\/]/;
   if (invalidCharacters.test(company)) {
-    companyError.style.display = "block";
+    alert("Company name cannot contain invalid characters.");
     return false;
-  } else {
-    companyError.style.display = "none";
   }
 
   return true; // Return true if all validation checks pass
