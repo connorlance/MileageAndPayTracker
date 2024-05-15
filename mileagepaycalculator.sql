@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 02:15 AM
+-- Generation Time: May 15, 2024 at 10:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,119 +24,55 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `daily_total_avg_calculation`
---
-
-CREATE TABLE `daily_total_avg_calculation` (
-  `date` date NOT NULL,
-  `daily_total_mile` int(11) NOT NULL,
-  `daily_total_pay` decimal(10,0) NOT NULL,
-  `daily_avg_per_hour` decimal(10,0) NOT NULL,
-  `daily_avg_per_mile` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `mileage_and_pay`
 --
 
 CREATE TABLE `mileage_and_pay` (
   `ID` int(11) NOT NULL,
   `date` date NOT NULL,
-  `mileage_start` int(7) NOT NULL,
-  `mileage_end` int(7) NOT NULL,
-  `pay` decimal(10,0) NOT NULL,
+  `mileage_start` int(11) NOT NULL,
+  `mileage_end` int(11) NOT NULL,
+  `total_miles` int(11) NOT NULL,
+  `pay` decimal(10,2) NOT NULL,
   `company` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `monthly_total_avg_calculation`
+-- Table structure for table `per_company_total_avg_calculation`
 --
 
-CREATE TABLE `monthly_total_avg_calculation` (
-  `month` varchar(20) NOT NULL,
-  `monthly_total_mile` int(11) NOT NULL,
-  `monthly_total_pay` decimal(10,0) NOT NULL,
-  `monthly_avg_per_hour` decimal(10,0) NOT NULL,
-  `monthly_avg_per_mile` decimal(10,0) NOT NULL
+CREATE TABLE `per_company_total_avg_calculation` (
+  `ID` int(11) NOT NULL,
+  `company` varchar(30) NOT NULL,
+  `period` enum('daily','weekly','monthly','yearly') NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `total_miles` int(11) NOT NULL,
+  `total_pay` decimal(15,0) NOT NULL,
+  `avg_per_mile` decimal(15,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `per_company_monthly_total_avg_calculation`
+-- Table structure for table `total_avg_calculation`
 --
 
-CREATE TABLE `per_company_monthly_total_avg_calculation` (
-  `month` varchar(25) NOT NULL,
-  `company` varchar(25) NOT NULL,
-  `monthly_total_pay` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `per_company_weekly_total_avg_calculation`
---
-
-CREATE TABLE `per_company_weekly_total_avg_calculation` (
-  `week_start_date` date NOT NULL,
-  `company` varchar(25) NOT NULL,
-  `weekly_total_pay` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `per_company_yearly_total_avg_calculation`
---
-
-CREATE TABLE `per_company_yearly_total_avg_calculation` (
-  `year` int(11) NOT NULL,
-  `company` varchar(25) NOT NULL,
-  `yearly_total_pay` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `weekly_total_avg_calculation`
---
-
-CREATE TABLE `weekly_total_avg_calculation` (
-  `week_start_date` date NOT NULL,
-  `weekly_total_mile` int(11) NOT NULL,
-  `weekly_total_pay` decimal(10,0) NOT NULL,
-  `weekly_avg_per_hour` decimal(10,0) NOT NULL,
-  `weekly_avg_per_mile` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `yearly_total_avg_calculation`
---
-
-CREATE TABLE `yearly_total_avg_calculation` (
-  `year` int(4) NOT NULL,
-  `yearly_total_mile` int(11) NOT NULL,
-  `yearly_total_pay` decimal(15,0) NOT NULL,
-  `yearly_avg_per_hour` decimal(15,0) NOT NULL,
-  `yearly_avg_per_mile` decimal(15,0) NOT NULL
+CREATE TABLE `total_avg_calculation` (
+  `ID` int(11) NOT NULL,
+  `period` enum('daily','weekly','monthly','yearly') NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `total_miles` int(11) NOT NULL,
+  `total_pay` decimal(10,2) NOT NULL,
+  `avg_per_mile` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `daily_total_avg_calculation`
---
-ALTER TABLE `daily_total_avg_calculation`
-  ADD PRIMARY KEY (`date`);
 
 --
 -- Indexes for table `mileage_and_pay`
@@ -145,34 +81,16 @@ ALTER TABLE `mileage_and_pay`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `per_company_monthly_total_avg_calculation`
+-- Indexes for table `per_company_total_avg_calculation`
 --
-ALTER TABLE `per_company_monthly_total_avg_calculation`
-  ADD PRIMARY KEY (`month`,`company`);
+ALTER TABLE `per_company_total_avg_calculation`
+  ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `per_company_weekly_total_avg_calculation`
+-- Indexes for table `total_avg_calculation`
 --
-ALTER TABLE `per_company_weekly_total_avg_calculation`
-  ADD PRIMARY KEY (`week_start_date`,`company`);
-
---
--- Indexes for table `per_company_yearly_total_avg_calculation`
---
-ALTER TABLE `per_company_yearly_total_avg_calculation`
-  ADD PRIMARY KEY (`year`,`company`);
-
---
--- Indexes for table `weekly_total_avg_calculation`
---
-ALTER TABLE `weekly_total_avg_calculation`
-  ADD PRIMARY KEY (`week_start_date`);
-
---
--- Indexes for table `yearly_total_avg_calculation`
---
-ALTER TABLE `yearly_total_avg_calculation`
-  ADD PRIMARY KEY (`year`);
+ALTER TABLE `total_avg_calculation`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -182,9 +100,22 @@ ALTER TABLE `yearly_total_avg_calculation`
 -- AUTO_INCREMENT for table `mileage_and_pay`
 --
 ALTER TABLE `mileage_and_pay`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
+--
+-- AUTO_INCREMENT for table `per_company_total_avg_calculation`
+--
+ALTER TABLE `per_company_total_avg_calculation`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `total_avg_calculation`
+--
+ALTER TABLE `total_avg_calculation`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
