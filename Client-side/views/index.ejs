@@ -1,66 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head.ejs') %>
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
   <body>
     <header>
       <div id="test">
         <h1>Mileage and Pay Calculator</h1>
       </div>
+      <nav><%- include('./partials/nav.ejs') %></nav>
     </header>
 
-    <%- include('./partials/nav.ejs') %>
-
     <main>
-      <div id="sortButtons1">
+      <section id="sortButtons1">
         <span>sort:</span>
         <button onclick="filterContent('all')">All</button>
         <button onclick="filterContent('type1')">Doordash</button>
         <button onclick="filterContent('type2')">UberEats</button>
-      </div>
+      </section>
 
-      <div id="columnNames1">
+      <section id="columnNames1">
         <span>date:</span>
         <span>Total Miles:</span>
         <span>Total Pay:</span>
         <span>AVG Pay Per Mile:</span>
-      </div>
+      </section>
 
-      <div id="dailyInfoForm_container">
-        <form id="dailyInfoForm">
-          <label for="date">Date:</label>
-          <input type="date" id="date" name="date" required />
+      <form id="dailyInfoForm" style="display: flex; flex-direction: column">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
 
-          <label for="mileageStart">Mileage Start:</label>
-          <input type="number" id="mileageStart" name="mileageStart" required />
+        <label for="mileageStart">Mileage Start:</label>
+        <input type="text" id="mileageStart" name="mileageStart" required />
 
-          <label for="mileageEnd">Mileage End:</label>
-          <input type="number" id="mileageEnd" name="mileageEnd" required />
+        <label for="mileageEnd">Mileage End:</label>
+        <input type="text" id="mileageEnd" name="mileageEnd" required />
 
-          <label for="pay">Pay:</label>
-          <input type="number" id="pay" name="pay" required />
+        <label for="pay">Pay:</label>
+        <input type="text" id="pay" name="pay" required />
 
-          <label for="company">Company:</label>
-          <input type="text" id="company" name="company" required />
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required />
 
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+        <button type="submit">Submit</button>
+      </form>
 
-      <div id="sortButtons2">
+      <section id="sortButtons2">
         <span>sort:</span>
         <button onclick="filterContent('all')">All</button>
         <button onclick="filterContent('type1')">Doordash</button>
         <button onclick="filterContent('type2')">UberEats</button>
-      </div>
+      </section>
 
-      <div id="columnNames2">
+      <section id="columnNames2">
         <span>date:</span>
         <span>MileageStart:</span>
         <span>MileageEnd:</span>
         <span>Total Miles:</span>
         <span>Company:</span>
         <span>Total Pay:</span>
-      </div>
+      </section>
     </main>
 
     <footer></footer>
