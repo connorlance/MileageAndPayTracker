@@ -40,6 +40,12 @@ function validateForm() {
     return false;
   }
 
+  //mileageEnd must be larger than mileageStart
+  if (mileageEnd <= mileageStart) {
+    alert("Mileage end must be larger than mileage start.");
+    return false;
+  }
+
   // No invalid characters
   const invalidCharacters = /[<>&$%?.*;'"`\\\/]/;
   if (invalidCharacters.test(company)) {
