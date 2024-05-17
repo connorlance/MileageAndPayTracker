@@ -4,8 +4,8 @@ function insert_mileage_and_pay(date, mileageStart, mileageEnd, pay, company, ca
   const total_miles = mileageEnd - mileageStart;
 
   pool.query(
-    "INSERT INTO mileage_and_pay (mileage_start, mileage_end, total_miles, pay, company, date) VALUES (?,?,?,?,?, UTC_TIMESTAMP())",
-    [mileageStart, mileageEnd, total_miles, pay, company],
+    "INSERT INTO mileage_and_pay (mileage_start, mileage_end, total_miles, pay, company, date) VALUES (?,?,?,?,?,CAST(? AS DATETIME))",
+    [mileageStart, mileageEnd, total_miles, pay, company, date],
     (err, data) => {
       if (err) {
         console.error("Error insert_mileage_and_pay query:", err);

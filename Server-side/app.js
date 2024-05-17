@@ -53,13 +53,17 @@ app.post("/dailyInfoForm", validateForm, (req, res) => {
 
   /*Process form data */
   const formData = req.body;
-  formData.date = moment.utc(formData.date).format("YYYY-MM-DD");
   console.log(formData);
+  console.log("Received date:", formData.date);
 
   /*Insert form data into database */
-  query.insert_mileage_and_pay(formData.date, formData.mileageStart, formData.mileageEnd, formData.pay, formData.company);
-
-  query.daily_total_avg_calculation();
+  let dateWithOffset = moment.utc(formData.date).format();
+  query.insert_mileage_and_pay(dateWithOffset, formData.mileageStart, formData.mileageEnd, formData.pay, formData.company, (err, data) => {
+    if (err) {
+      console.error("Error inserting mileage and pay:", err);
+    }
+    query.daily_total_avg_calculation();
+  });
 });
 
 //Route: options
