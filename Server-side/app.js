@@ -4,7 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const multer = require("multer");
 const { body, validationResult } = require("express-validator");
-const moment = require("moment-timezone");
+const moment = require("moment");
 const query = require("./queries.js");
 
 //Create express app
@@ -36,6 +36,15 @@ const validateForm = [
   body("company")
     .trim()
     .customSanitizer((value) => value.replace(/[<>&$%?.*;'"`\\/]/g, "")),
+  body("insertCompany")
+    .trim()
+    .matches(/^[a-zA-Z\s]*$/, "i"),
+];
+
+const validateCompanyForm = [
+  body("insertCompany")
+    .trim()
+    .matches(/^[a-zA-Z\s]*$/, "i"),
 ];
 
 //Route: index
@@ -61,14 +70,41 @@ app.post("/dailyInfoForm", validateForm, (req, res) => {
   query.insert_mileage_and_pay(dateWithOffset, formData.mileageStart, formData.mileageEnd, formData.pay, formData.company, (err, data) => {
     if (err) {
       console.error("Error inserting mileage and pay:", err);
+    } else {
+      query.calculateTotalAvg();
     }
-    query.daily_total_avg_calculation();
   });
 });
 
 //Route: options
 app.get("/options", (req, res) => {
   res.render("options");
+});
+
+// Route: company Insert form
+app.post("/createCompany", validateCompanyForm, (req, res) => {
+  /*Process form data */
+  const { insertCompany } = req.body;
+
+  /*Insert form data into database */
+  query.create_per_company_total_avg_calculation(insertCompany, (err, data) => {
+    if (err) {
+      console.error("Error creating company:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    res.status(200).json({ success: true });
+  });
+});
+
+// Route to send company names to the client
+app.get("/companyNames", (req, res) => {
+  query.getCompanyNames((err, companyNames) => {
+    if (err) {
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json({ companyNames });
+    }
+  });
 });
 
 //Route: 404
