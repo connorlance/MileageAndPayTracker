@@ -11,14 +11,14 @@
     <%- include('./partials/nav.ejs') %>
 
     <main>
-      <form>
-        <div><input type="text" placeholder="New Company |" /></div>
+      <form id="companyForm">
+        <div><input type="text" id="insertCompany" name="insertCompany" placeholder="New Company |" /></div>
         <div><input type="submit" value="Add" /></div>
       </form>
 
       <form>
         <div>
-          <select>
+          <select id="companyDropdown">
             <option value="">Select Company</option>
           </select>
         </div>
