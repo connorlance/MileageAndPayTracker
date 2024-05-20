@@ -27,8 +27,11 @@ app.listen(3000);
 //Middleware: logging
 app.use(morgan("dev"));
 
+//Middleware: json
+app.use(express.json());
+
 //Middleware: daily info form input validation
-const validateForm = [
+const validateDailyInfoForm = [
   body("date").toDate().isISO8601(),
   body("mileageStart").toFloat().isNumeric(),
   body("mileageEnd").toFloat().isNumeric(),
@@ -41,8 +44,8 @@ const validateForm = [
     .matches(/^[a-zA-Z\s]*$/, "i"),
 ];
 
-const validateCompanyForm = [
-  body("insertCompany")
+const validateTrimLetters = (fieldName) => [
+  body(fieldName)
     .trim()
     .matches(/^[a-zA-Z\s]*$/, "i"),
 ];
@@ -53,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 //Route: daily info form
-app.post("/dailyInfoForm", validateForm, (req, res) => {
+app.post("/dailyInfoForm", validateDailyInfoForm, (req, res) => {
   /*Check for validation errors*/
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -82,11 +85,17 @@ app.get("/options", (req, res) => {
 });
 
 // Route: company Insert form
-app.post("/createCompany", validateCompanyForm, (req, res) => {
-  /*Process form data */
+app.post("/createCompany", validateTrimLetters("insertCompany"), (req, res) => {
+  /* Check for validation errors */
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  /* Process form data */
   const { insertCompany } = req.body;
 
-  /*Insert form data into database */
+  /* Insert form data into database */
   query.create_per_company_total_avg_calculation(insertCompany, (err, data) => {
     if (err) {
       console.error("Error creating company:", err);
@@ -96,7 +105,7 @@ app.post("/createCompany", validateCompanyForm, (req, res) => {
   });
 });
 
-// Route to send company names to the client
+// Route: send company names to the client
 app.get("/companyNames", (req, res) => {
   query.getCompanyNames((err, companyNames) => {
     if (err) {
@@ -104,6 +113,26 @@ app.get("/companyNames", (req, res) => {
     } else {
       res.json({ companyNames });
     }
+  });
+});
+
+//Route: remove company name
+app.delete("/removeCompany", validateTrimLetters("companyName"), (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  /* Process form data */
+  const { companyName } = req.body;
+  console.log(companyName);
+
+  query.removeCompany(companyName, (err, data) => {
+    if (err) {
+      console.error("Error removing company:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    res.status(200).json({ success: true });
   });
 });
 
