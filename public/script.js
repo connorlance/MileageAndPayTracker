@@ -33,13 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
-    return true; // Return true if all validation checks pass
+    return true;
   }
 
   // Function to validate companyForm inputs
-  function validateCompanyForm() {
-    const form = document.getElementById("companyForm");
-    const insertCompany = form.querySelector("input[name='insertCompany']").value;
+  function validateInsertCompanyForm() {
+    const insertCompany = document.querySelector("#companyForm input[name='insertCompany']").value;
 
     // Check if insertCompany is empty
     if (!insertCompany) {
@@ -53,10 +52,29 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
-    return true; // Return true if all validation checks pass
+    return true;
   }
 
-  // Attach event listener to dailyInfoForm
+  // Function to validate companyForm inputs
+  function validateRemoveCompanyForm() {
+    const companyName = document.getElementById("companyDropdown").value;
+
+    // Check if the input value is empty
+    if (!companyName) {
+      alert("Please select a company name.");
+      return false;
+    }
+
+    // Enter letters
+    if (!companyName.match(/^[a-zA-Z\s]*$/)) {
+      alert("Company name can only contain letters and spaces.");
+      return false;
+    }
+
+    return true;
+  }
+
+  // dailyInfoForm
   if (document.getElementById("dailyInfoForm")) {
     document.getElementById("dailyInfoForm").addEventListener("submit", function (event) {
       event.preventDefault();
@@ -73,22 +91,19 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(data);
           })
           .catch((err) => console.error("Error: ", err));
-        this.reset(); // Reset the form
+        this.reset();
       }
     });
   }
 
-  // Attach event listener to companyForm
+  // insertCompanyForm
   if (document.getElementById("companyForm")) {
     document.getElementById("companyForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
-      if (validateCompanyForm()) {
+      if (validateInsertCompanyForm()) {
         const insertCompany = this.querySelector("input[name='insertCompany']").value;
-        console.log("Company Name:", insertCompany); // Log the company name
-
-        const formData = new FormData();
-        formData.append("insertCompany", insertCompany);
+        const formData = new FormData(this);
 
         fetch("/createCompany", {
           method: "POST",
@@ -96,42 +111,35 @@ document.addEventListener("DOMContentLoaded", function () {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log("Response:", data); // Log the response from the server
-            if (data.error) {
-              console.error("Error checking table existence:", data.error);
+            console.log(data);
+
+            if (data.exists) {
+              alert(`The company "${insertCompany}" already exists.`);
             } else {
-              if (data.exists) {
-                alert(`The company "${insertCompany}" already exists.`);
-              } else {
-                alert(`${insertCompany} added successfully.`);
-              }
+              alert(`${insertCompany} added successfully.`);
             }
-            // After successful insertion, update the dropdown menu
-            updateDropdownMenu();
+            updateRemoveCompanyDropdownMenu();
           })
           .catch((err) => console.error("Error: ", err));
-
-        this.reset(); // Reset the form
+        this.reset();
       }
     });
   }
 
   // Function to update dropdown menu with company names
   function updateRemoveCompanyDropdownMenu() {
-    // Fetch company names from server
+    const companyDropdown = document.getElementById("companyDropdown");
+    if (!companyDropdown) {
+      return;
+    }
+
     fetch("/companyNames")
       .then((response) => response.json())
       .then((data) => {
-        const companyDropdown = document.getElementById("companyDropdown");
-
-        // Clear any existing options
         companyDropdown.innerHTML = "";
 
-        // Add the default option
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Select Company";
-        companyDropdown.appendChild(defaultOption);
+        companyDropdown.innerHTML = "<option value=''>Select Company</option>";
+        companyDropdown.selectedIndex = -1;
 
         // Add the company names as options
         data.companyNames.forEach((companyName) => {
@@ -142,6 +150,32 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       })
       .catch((err) => console.error("Error fetching company names:", err));
+  }
+
+  // Function to remove a company
+  if (document.getElementById("removeCompanyForm")) {
+    document.getElementById("removeCompanyForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (validateRemoveCompanyForm()) {
+        const companyName = document.getElementById("companyDropdown").value;
+
+        fetch("/removeCompany", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json", // Correct syntax for setting headers
+          },
+          body: JSON.stringify({ companyName: companyName }), // Send JSON data
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            updateRemoveCompanyDropdownMenu();
+          })
+          .catch((err) => console.error("Error: ", err));
+        this.reset();
+      }
+    });
   }
 
   // Fetch company names from server when the DOM content is loaded
