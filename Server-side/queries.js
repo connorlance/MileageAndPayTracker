@@ -150,6 +150,9 @@ function create_per_company_total_avg_calculation(companyName, callback) {
   });
 }
 
+//remove  per_company_total_avg_calculation table
+function remove_per_company_total_avg_calculation(companyName, callback) {}
+
 // Function to get company names from the company_names table
 function getCompanyNames(callback) {
   const query = "SELECT company_name FROM company_names";
@@ -164,10 +167,43 @@ function getCompanyNames(callback) {
   });
 }
 
+function removeCompany(companyName, callback) {
+  console.log(companyName);
+  const tableName = `${companyName}_total_avg_calculation`;
+
+  const dropTableQuery = `
+    DROP TABLE IF EXISTS ${tableName};
+  `;
+
+  const deleteCompanyQuery = `
+    DELETE FROM company_names WHERE company_name = '${companyName}';
+  `;
+
+  pool.query(dropTableQuery, (err, data) => {
+    if (err) {
+      console.error("Error dropping table:", err);
+      callback(err, false);
+    } else {
+      console.log(`Table ${tableName} dropped successfully.`);
+      // Execute delete company query
+      pool.query(deleteCompanyQuery, (err, data) => {
+        if (err) {
+          console.error("Error deleting company:", err);
+          callback(err, false);
+        } else {
+          console.log(`Company ${companyName} deleted from company_names table.`);
+          callback(null, true);
+        }
+      });
+    }
+  });
+}
+
 module.exports = {
   insert_mileage_and_pay,
   calculateTotalAvg,
   insert_total_avg_calculation,
   create_per_company_total_avg_calculation,
   getCompanyNames,
+  removeCompany,
 };
