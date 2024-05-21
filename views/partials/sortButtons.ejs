@@ -1,0 +1,8 @@
+<% if (companyNames && companyNames.length > 0) { %>
+    <button value="All">All</button>
+    <% companyNames.forEach(companyName => { %>
+      <button value="<%= companyName %>"><%= companyName %></button>
+    <% }); %>
+  <% } else { %>
+    <p>No company names available.</p>
+  <% } %>

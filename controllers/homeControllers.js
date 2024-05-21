@@ -4,7 +4,16 @@ const moment = require("moment");
 
 //Controller: index
 const getIndex = (req, res) => {
-  res.render("index");
+  query.getCompanyNames((err, companyNames) => {
+    if (err) {
+      console.error("Error getting company names:", err);
+      return;
+    }
+    renderIndex(companyNames);
+  });
+  const renderIndex = (companyNames) => {
+    res.render("index", { companyNames });
+  };
 };
 
 //Controller: daily info form

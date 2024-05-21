@@ -13,10 +13,7 @@
 
     <main>
       <section id="sortButtons1">
-        <span>sort:</span>
-        <button onclick="filterContent('all')">All</button>
-        <button onclick="filterContent('type1')">Doordash</button>
-        <button onclick="filterContent('type2')">UberEats</button>
+        <%- include('./partials/sortButtons.ejs') %>
       </section>
 
       <section id="columnNames1">
@@ -25,6 +22,7 @@
         <span>Total Pay:</span>
         <span>AVG Pay Per Mile:</span>
       </section>
+
 
       <form id="dailyInfoForm" style="display: flex; flex-direction: column">
         <label for="date">Date:</label>
@@ -44,6 +42,7 @@
 
         <button type="submit">Submit</button>
       </form>
+
 
       <section id="sortButtons2">
         <span>sort:</span>
