@@ -31,6 +31,7 @@ const postDailyInfoForm = (req, res) => {
       console.error("Error inserting mileage and pay:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
+    query.calculateTotalAvg();
     res.status(200).json({ success: true });
   });
 };
