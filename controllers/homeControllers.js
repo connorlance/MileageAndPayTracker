@@ -16,6 +16,33 @@ const getIndex = (req, res) => {
   };
 };
 
+//Controller: get interval sorted data
+const getIntervalSortedData = (req, res) => {
+  const type = req.params.type;
+
+  const queryMap = {
+    daily: query.getDailyData,
+    weekly: query.getWeeklyData,
+    monthly: query.getMonthlyData,
+    yearly: query.getYearlyData,
+  };
+
+  const getDataFunction = queryMap[type];
+
+  if (!getDataFunction) {
+    return res.status(400).send("Invalid type parameter");
+  }
+
+  getDataFunction((err, data) => {
+    if (err) {
+      console.error(`Error fetching ${type} data:`, err);
+      return res.status(500).send("Internal Server Error");
+    }
+    console.log(`Fetched data for ${type}:`, data); // Log the data
+    res.render("partials/intervalSortedData", { data, type });
+  });
+};
+
 //Controller: daily info form
 const postDailyInfoForm = (req, res) => {
   const errors = validationResult(req);
@@ -38,5 +65,6 @@ const postDailyInfoForm = (req, res) => {
 
 module.exports = {
   getIndex,
+  getIntervalSortedData,
   postDailyInfoForm,
 };
