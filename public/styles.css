@@ -1,6 +1,257 @@
-#test {
+/* General body styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Header styles */
+header {
+  background-color: #f8f9fa;
+  padding: 10px 0;
   text-align: center;
-  color: red;
-  background-color: blue;
-  font-family: "Lobster", cursive;
+  border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Navigation styles */
+nav {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 0;
+}
+
+nav div {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Main section styles */
+main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Interval Sort Buttons styles */
+#intervalSortButtons {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#intervalSortButtons span {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#intervalSortButtons button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#intervalSortButtons button.active {
+  background-color: #007bff; /* Highlight color */
+  color: #fff;
+  border-color: #007bff;
+}
+
+#intervalSortButtons button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+table th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Form styles */
+form {
+  margin-bottom: 20px;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Checkbox styles */
+label[for="multipleInputForms"] {
+  font-weight: bold;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Footer styles */
+footer {
+  background-color: #f8f9fa;
+  padding: 10px 0;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+/* General styling for the options page */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+nav {
+  background-color: #444;
+  padding: 10px 0;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+nav a:hover {
+  background-color: #555;
+}
+
+main {
+  padding: 20px;
+}
+
+form {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+input[type="text"] {
+  width: calc(100% - 22px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #555;
+}
+
+select {
+  width: calc(100% - 22px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
