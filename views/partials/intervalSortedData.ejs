@@ -1,0 +1,22 @@
+<h2><%= type.charAt(0).toUpperCase() + type.slice(1) %> Data</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Total Miles</th>
+      <th>Total Pay</th>
+      <th>Average Pay Per Mile</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach(item => { %>
+    <tr>
+      <td><%= new Date(item.start_date).toLocaleDateString() %></td>
+      <td><%= item.total_miles %></td>
+      <td><%= item.total_pay %></td>
+      <td><%= item.avg_per_mile %></td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
