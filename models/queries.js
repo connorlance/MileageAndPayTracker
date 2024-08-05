@@ -197,11 +197,72 @@ function removeCompany(companyName, callback) {
   });
 }
 
+// FUNCTION TO GET DAILY DATA
+const getDailyData = (callback) =>
+  pool.query(
+    `SELECT * FROM total_avg_calculation WHERE period = 'daily' AND start_date = (SELECT MAX(start_date) FROM total_avg_calculation WHERE period = 'daily') ORDER BY end_date DESC LIMIT 1`,
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching daily data:", err);
+      } else {
+        console.log("Daily data fetched:", results); // Log results
+      }
+      callback(err, results);
+    }
+  );
+
+// FUNCTION TO GET WEEKLY DATA
+const getWeeklyData = (callback) =>
+  pool.query(
+    `SELECT * FROM total_avg_calculation WHERE period = 'weekly' AND start_date = (SELECT MAX(start_date) FROM total_avg_calculation WHERE period = 'weekly') ORDER BY end_date DESC LIMIT 1`,
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching weekly data:", err);
+      } else {
+        console.log("Weekly data fetched:", results); // Log results
+      }
+      callback(err, results);
+    }
+  );
+
+// FUNCTION TO GET MONTHLY DATA
+const getMonthlyData = (callback) =>
+  pool.query(
+    `SELECT * FROM total_avg_calculation WHERE period = 'monthly' AND start_date = (SELECT MAX(start_date) FROM total_avg_calculation WHERE period = 'monthly') ORDER BY end_date DESC LIMIT 1`,
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching monthly data:", err);
+      } else {
+        console.log("Monthly data fetched:", results); // Log results
+      }
+      callback(err, results);
+    }
+  );
+
+// FUNCTION TO GET YEARLY DATA
+const getYearlyData = (callback) =>
+  pool.query(
+    `SELECT * FROM total_avg_calculation WHERE period = 'yearly' AND start_date = (SELECT MAX(start_date) FROM total_avg_calculation WHERE period = 'yearly') ORDER BY end_date DESC LIMIT 1`,
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching yearly data:", err);
+      } else {
+        console.log("Yearly data fetched:", results); // Log results
+      }
+      callback(err, results);
+    }
+  );
+
 module.exports = {
   insert_mileage_and_pay,
   calculateTotalAvg,
   insert_total_avg_calculation,
+  update_total_avg_calculation,
   create_per_company_total_avg_calculation,
   getCompanyNames,
   removeCompany,
+  getDailyData,
+  getWeeklyData,
+  getMonthlyData,
+  getYearlyData,
 };
