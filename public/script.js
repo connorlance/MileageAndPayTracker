@@ -74,6 +74,42 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
+  // Sort buttons
+  const intervalSortButtons = document.querySelectorAll("#intervalSortButtons button");
+
+  // Function to highlight the selected button
+  function highlightButton(button) {
+    intervalSortButtons.forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+  }
+
+  // Function to fetch sorted data and update the page
+  function fetchSortedPartial(sortType) {
+    fetch(`/sort/${sortType}`)
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("IntervalSortedData").innerHTML = data;
+      })
+      .catch((err) => console.error("Error fetching sorted data:", err));
+  }
+
+  // Add click event listeners to sort buttons
+  intervalSortButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      highlightButton(this);
+      fetchSortedPartial(this.value);
+    });
+  });
+
+  // Fetch daily data on page load and highlight the daily button
+  window.addEventListener("load", () => {
+    const dailyButton = document.querySelector("#intervalSortButtons button[value='daily']");
+    if (dailyButton) {
+      highlightButton(dailyButton);
+      fetchSortedPartial("daily");
+    }
+  });
+
   // dailyInfoForm
   if (document.getElementById("dailyInfoForm")) {
     document.getElementById("dailyInfoForm").addEventListener("submit", function (event) {
