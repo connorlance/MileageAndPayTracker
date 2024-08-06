@@ -170,27 +170,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Function to update dropdown menu with company names
-  function updateRemoveCompanyDropdownMenu() {
-    const companyDropdown = document.getElementById("companyDropdown");
-    if (!companyDropdown) {
+  // Function to populate company dropdowns
+  function populateCompanyDropdowns() {
+    const companyDropdowns = document.querySelectorAll("#companyDropdownDaily, #removeCompanyDropdown");
+    if (companyDropdowns.length === 0) {
       return;
     }
 
     fetch("/companyNames")
       .then((response) => response.json())
       .then((data) => {
-        companyDropdown.innerHTML = "";
+        const options = "<option value=''>Select Company</option>" + data.companyNames.map((companyName) => `<option value='${companyName}'>${companyName}</option>`).join("");
 
-        companyDropdown.innerHTML = "<option value=''>Select Company</option>";
-        companyDropdown.selectedIndex = -1;
-
-        // Add the company names as options
-        data.companyNames.forEach((companyName) => {
-          const option = document.createElement("option");
-          option.value = companyName;
-          option.textContent = companyName;
-          companyDropdown.appendChild(option);
+        companyDropdowns.forEach((dropdown) => {
+          dropdown.innerHTML = options;
         });
       })
       .catch((err) => console.error("Error fetching company names:", err));
@@ -222,6 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Fetch company names from server when the DOM content is loaded
-  updateRemoveCompanyDropdownMenu();
+  // Populate the company dropdowns when the page loads
+  populateCompanyDropdowns();
 });
