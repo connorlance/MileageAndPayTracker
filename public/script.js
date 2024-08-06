@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function validateDailyInfoForm() {
     const form = document.getElementById("dailyInfoForm");
     const date = form.querySelector("input[name='date']").value;
-    const mileageStart = form.querySelector("input[name='mileageStart']").value;
-    const mileageEnd = form.querySelector("input[name='mileageEnd']").value;
+    let mileageStart = form.querySelector("input[name='mileageStart']").value;
+    let mileageEnd = form.querySelector("input[name='mileageEnd']").value;
     const pay = form.querySelector("input[name='pay']").value;
     const company = form.querySelector("input[name='company']").value;
 
@@ -79,6 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Sort buttons
+  let currentIntervalSortMethod = "daily";
+
   const intervalSortButtons = document.querySelectorAll("#intervalSortButtons button");
 
   // Function to highlight the selected button
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       highlightButton(this);
       fetchSortedPartial(this.value);
+      currentIntervalSortMethod = this.value;
     });
   });
 
@@ -129,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((response) => response.text())
           .then((data) => {
             console.log(data);
+            fetchSortedPartial(currentIntervalSortMethod);
           })
           .catch((err) => console.error("Error: ", err));
         this.reset();
