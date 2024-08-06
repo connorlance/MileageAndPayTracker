@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let mileageStart = form.querySelector("input[name='mileageStart']").value;
     let mileageEnd = form.querySelector("input[name='mileageEnd']").value;
     const pay = form.querySelector("input[name='pay']").value;
-    const company = form.querySelector("input[name='company']").value;
+    const company = form.querySelector("select[name='company']").value;
 
     // Fill all fields
     if (!date || !mileageStart || !mileageEnd || !pay || !company) {
@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // Function to validate companyForm inputs
+  // Function to validate remove companyForm inputs
   function validateRemoveCompanyForm() {
-    const companyName = document.getElementById("companyDropdown").value;
+    const companyName = document.getElementById("removeCompanyDropdown").value;
 
     // Check if the input value is empty
     if (!companyName) {
@@ -200,9 +200,9 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch("/removeCompany", {
           method: "DELETE",
           headers: {
-            "Content-Type": "application/json", // Correct syntax for setting headers
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ companyName: companyName }), // Send JSON data
+          body: JSON.stringify({ companyName: companyName }),
         })
           .then((response) => response.json())
           .then((data) => {
