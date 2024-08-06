@@ -38,7 +38,7 @@ const getIntervalSortedData = (req, res) => {
       console.error(`Error fetching ${type} data:`, err);
       return res.status(500).send("Internal Server Error");
     }
-    console.log(`Fetched data for ${type}:`, data); // Log the data
+    console.log(`Fetched data for ${type}:`, data);
     res.render("partials/intervalSortedData", { data, type });
   });
 };
