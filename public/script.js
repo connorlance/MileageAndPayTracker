@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
+    // Remove commas from mileageStart and mileageEnd
+    mileageStart = mileageStart.replace(/,/g, "");
+    mileageEnd = mileageEnd.replace(/,/g, "");
+
     return true;
   }
 
