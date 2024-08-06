@@ -133,9 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((data) => {
             console.log(data);
             fetchSortedPartial(currentIntervalSortMethod);
+            this.querySelector("input[name='pay']").value = "";
+            this.querySelector("select[name='company']").value = "";
           })
           .catch((err) => console.error("Error: ", err));
-        this.reset();
       }
     });
   }
