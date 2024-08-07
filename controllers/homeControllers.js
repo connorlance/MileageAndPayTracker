@@ -63,8 +63,36 @@ const postDailyInfoForm = (req, res) => {
   });
 };
 
+// Controller: mileage_and_pay rows
+const getMapRows = (req, res) => {
+  const company = req.query.company || "all";
+
+  if (company === "all") {
+    query.getAllMapRows((err, results) => {
+      if (err) {
+        console.error("Error fetching all map rows:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      console.log("Fetched all map rows:", results);
+      if (results.length === 0) {
+        console.log("No rows returned for 'All' query");
+      }
+      res.render("partials/mapRows", { data: results });
+    });
+  } else {
+    query.getMapRowsByCompany(company, (err, results) => {
+      if (err) {
+        console.error("Error fetching map rows by company:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.render("partials/mapRows", { data: results });
+    });
+  }
+};
+
 module.exports = {
   getIndex,
   getIntervalSortedData,
   postDailyInfoForm,
+  getMapRows,
 };
