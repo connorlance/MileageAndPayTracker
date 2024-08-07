@@ -8,13 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const pay = form.querySelector("input[name='pay']").value;
     const company = form.querySelector("select[name='company']").value;
 
-    // Fill all fields
+    // Check if all fields are filled
     if (!date || !mileageStart || !mileageEnd || !pay || !company) {
       alert("Please fill in all fields.");
       return false;
     }
 
-    // Enter numeric value
+    // Ensure numeric values for mileageStart, mileageEnd, and pay
     if (isNaN(parseFloat(mileageStart)) || isNaN(parseFloat(mileageEnd)) || isNaN(parseFloat(pay))) {
       alert("Mileage start, mileage end, and pay must be numeric values.");
       return false;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
-    // No invalid characters
+    // Check for invalid characters in company name
     const invalidCharacters = /[<>&$%?.*;'"`\\\/]/;
     if (invalidCharacters.test(company)) {
       alert("Company name cannot contain invalid characters.");
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // Function to validate companyForm inputs
+  // Function to validate insertCompanyForm inputs
   function validateInsertCompanyForm() {
     const insertCompany = document.querySelector("#companyForm input[name='insertCompany']").value;
 
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
-    // Enter letters
+    // Ensure insertCompany contains only letters and spaces
     if (!insertCompany.match(/^[a-zA-Z\s]*$/)) {
       alert("Company name can only contain letters and spaces.");
       return false;
@@ -59,17 +59,17 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
-  // Function to validate remove companyForm inputs
+  // Function to validate removeCompanyForm inputs
   function validateRemoveCompanyForm() {
     const companyName = document.getElementById("removeCompanyDropdown").value;
 
-    // Check if the input value is empty
+    // Check if companyName is empty
     if (!companyName) {
       alert("Please select a company name.");
       return false;
     }
 
-    // Enter letters
+    // Ensure companyName contains only letters and spaces
     if (!companyName.match(/^[a-zA-Z\s]*$/)) {
       alert("Company name can only contain letters and spaces.");
       return false;
@@ -140,6 +140,43 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Mileage and Pay Method
+  let currentMapRowsMethod = "all";
+
+  // Function to highlight the selected button
+  function highlightMapRowsButton(button) {
+    document.querySelectorAll("#mapRowsButtons button").forEach((btn) => btn.classList.remove("active"));
+    button.classList.add("active");
+  }
+
+  // Function to fetch map rows data and update the page
+  function fetchMapRowsData(company) {
+    fetch(company === "all" ? "/mapRows" : `/mapRows?company=${encodeURIComponent(company)}`)
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("MapRowsData").innerHTML = data;
+      })
+      .catch((err) => console.error("Error fetching map rows data:", err));
+  }
+
+  // Add click event listeners to map rows buttons
+  document.querySelectorAll("#mapRowsButtons button").forEach((button) => {
+    button.addEventListener("click", function () {
+      highlightMapRowsButton(this);
+      fetchMapRowsData(this.value);
+      currentMapRowsMethod = this.value;
+    });
+  });
+
+  // Fetch all map rows data on page load and highlight the 'All' button
+  window.addEventListener("load", () => {
+    const allButton = document.querySelector("#mapRowsButtons button[value='all']");
+    if (allButton) {
+      highlightMapRowsButton(allButton);
+      fetchMapRowsData("all");
+    }
+  });
 
   // insertCompanyForm
   if (document.getElementById("companyForm")) {
