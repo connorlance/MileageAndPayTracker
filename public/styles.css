@@ -4,12 +4,15 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
+  background-color: #f4f4f4; /* Unified background color */
+  line-height: 1.6;
 }
 
 /* Header styles */
 header {
-  background-color: #f8f9fa;
-  padding: 10px 0;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
@@ -20,24 +23,19 @@ header h1 {
 
 /* Navigation styles */
 nav {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #444;
   padding: 10px 0;
-}
-
-nav div {
-  display: inline-block;
-  margin: 0 15px;
 }
 
 nav a {
   color: #fff;
   text-decoration: none;
-  font-weight: bold;
+  padding: 10px 20px;
+  display: inline-block;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  background-color: #555;
 }
 
 /* Main section styles */
@@ -48,17 +46,20 @@ main {
 }
 
 /* Interval Sort Buttons styles */
-#intervalSortButtons {
+#intervalSortButtons,
+#sortButtons2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-#intervalSortButtons span {
+#intervalSortButtons span,
+#sortButtons2 span {
   font-weight: bold;
   margin-right: 10px;
 }
 
-#intervalSortButtons button {
+#intervalSortButtons button,
+#sortButtons2 button {
   padding: 10px 20px;
   margin: 5px;
   border: 1px solid #ccc;
@@ -68,13 +69,15 @@ main {
   transition: background-color 0.3s, color 0.3s;
 }
 
-#intervalSortButtons button.active {
+#intervalSortButtons button.active,
+#sortButtons2 button.active {
   background-color: #007bff; /* Highlight color */
   color: #fff;
   border-color: #007bff;
 }
 
-#intervalSortButtons button:hover {
+#intervalSortButtons button:hover,
+#sortButtons2 button:hover {
   background-color: #e0e0e0;
 }
 
@@ -103,100 +106,6 @@ table tr:nth-child(even) {
 
 /* Form styles */
 form {
-  margin-bottom: 20px;
-}
-
-form div {
-  margin-bottom: 10px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-form input[type="text"],
-form input[type="date"],
-form select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-form input[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-form input[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-/* Checkbox styles */
-label[for="multipleInputForms"] {
-  font-weight: bold;
-}
-
-input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* Footer styles */
-footer {
-  background-color: #f8f9fa;
-  padding: 10px 0;
-  text-align: center;
-  border-top: 1px solid #ddd;
-  margin-top: 20px;
-}
-
-/* General styling for the options page */
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
-
-header {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  text-align: center;
-}
-
-h1 {
-  margin: 0;
-}
-
-nav {
-  background-color: #444;
-  padding: 10px 0;
-}
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 20px;
-  display: inline-block;
-}
-
-nav a:hover {
-  background-color: #555;
-}
-
-main {
-  padding: 20px;
-}
-
-form {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -209,14 +118,21 @@ form div {
   margin-bottom: 15px;
 }
 
-input[type="text"] {
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
   width: calc(100% - 22px);
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
-input[type="submit"] {
+form input[type="submit"] {
   background-color: #333;
   color: #fff;
   border: none;
@@ -226,26 +142,20 @@ input[type="submit"] {
   font-size: 16px;
 }
 
-input[type="submit"]:hover {
+form input[type="submit"]:hover {
   background-color: #555;
 }
 
-select {
-  width: calc(100% - 22px);
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+/* Checkbox styles */
+label[for="multipleInputForms"] {
+  font-weight: bold;
 }
 
 input[type="checkbox"] {
   margin-right: 10px;
 }
 
+/* Footer styles */
 footer {
   background-color: #333;
   color: #fff;
