@@ -1,7 +1,7 @@
 const pool = require("./db_connection.js");
 const moment = require("moment");
 
-//INSERT ROW INTO 'mileage_and_pay'
+// INSERT ROW INTO 'mileage_and_pay'
 function insert_mileage_and_pay(date, mileage_start, mileage_end, pay, company, callback) {
   const total_miles = mileage_end - mileage_start;
 
@@ -21,7 +21,7 @@ function insert_mileage_and_pay(date, mileage_start, mileage_end, pay, company, 
   );
 }
 
-//CALCULATE DAILY, WEEKLY, MONTHLY, YEARLY
+// CALCULATE DAILY, WEEKLY, MONTHLY, YEARLY
 function calculateTotalAvg() {
   const periods = ["daily", "weekly", "monthly", "yearly"];
 
@@ -78,7 +78,7 @@ function calculateTotalAvg() {
   });
 }
 
-//INSERT ROW INTO 'total_avg_calculation'
+// INSERT ROW INTO 'total_avg_calculation'
 function insert_total_avg_calculation(period, start_date, end_date, total_miles, total_pay, avg_per_mile) {
   pool.query(
     "INSERT INTO total_avg_calculation (period, start_date, end_date, total_miles, total_pay, avg_per_mile) VALUES (?, ?, ?, ?, ?, ?)",
@@ -93,7 +93,7 @@ function insert_total_avg_calculation(period, start_date, end_date, total_miles,
   );
 }
 
-//UPDATE ROW IN 'total_avg_calculation'
+// UPDATE ROW IN 'total_avg_calculation'
 function update_total_avg_calculation(period, start_date, total_miles, total_pay, avg_per_mile) {
   pool.query(
     "UPDATE total_avg_calculation SET total_miles = ?, total_pay = ?, avg_per_mile = ? WHERE period = ? AND start_date = ?",
@@ -108,7 +108,7 @@ function update_total_avg_calculation(period, start_date, total_miles, total_pay
   );
 }
 
-//create new per_company_total_avg_calculation table
+// CREATE NEW PER_COMPANY_TOTAL_AVG_CALCULATION TABLE
 function create_per_company_total_avg_calculation(companyName, callback) {
   const tableName = `${companyName}_total_avg_calculation`;
 
@@ -136,7 +136,6 @@ function create_per_company_total_avg_calculation(companyName, callback) {
       callback(err, false);
     } else {
       console.log(`Table ${tableName} created successfully.`);
-      // Execute the insert company query
       pool.query(insertCompanyQuery, [companyName], (err, result) => {
         if (err) {
           console.error("Error inserting company name:", err);
@@ -150,7 +149,7 @@ function create_per_company_total_avg_calculation(companyName, callback) {
   });
 }
 
-// Function to get company names from the company_names table
+// FUNCTION TO GET COMPANY NAMES FROM THE 'company_names' TABLE
 function getCompanyNames(callback) {
   const query = "SELECT company_name FROM company_names";
   pool.query(query, (err, results) => {
@@ -164,9 +163,8 @@ function getCompanyNames(callback) {
   });
 }
 
-// Function to remove company table and company name from company_names table
+// FUNCTION TO REMOVE COMPANY TABLE AND COMPANY NAME FROM 'company_names' TABLE
 function removeCompany(companyName, callback) {
-  console.log(companyName);
   const tableName = `${companyName}_total_avg_calculation`;
 
   const dropTableQuery = `
@@ -174,7 +172,7 @@ function removeCompany(companyName, callback) {
   `;
 
   const deleteCompanyQuery = `
-    DELETE FROM company_names WHERE company_name = '${companyName}';
+    DELETE FROM company_names WHERE company_name = ?;
   `;
 
   pool.query(dropTableQuery, (err, data) => {
@@ -183,8 +181,7 @@ function removeCompany(companyName, callback) {
       callback(err, false);
     } else {
       console.log(`Table ${tableName} dropped successfully.`);
-      // Execute delete company query
-      pool.query(deleteCompanyQuery, (err, data) => {
+      pool.query(deleteCompanyQuery, [companyName], (err, data) => {
         if (err) {
           console.error("Error deleting company:", err);
           callback(err, false);
@@ -205,7 +202,7 @@ const getDailyData = (callback) =>
       if (err) {
         console.error("Error fetching daily data:", err);
       } else {
-        console.log("Daily data fetched:", results); // Log results
+        console.log("Daily data fetched:", results);
       }
       callback(err, results);
     }
@@ -219,7 +216,7 @@ const getWeeklyData = (callback) =>
       if (err) {
         console.error("Error fetching weekly data:", err);
       } else {
-        console.log("Weekly data fetched:", results); // Log results
+        console.log("Weekly data fetched:", results);
       }
       callback(err, results);
     }
@@ -233,7 +230,7 @@ const getMonthlyData = (callback) =>
       if (err) {
         console.error("Error fetching monthly data:", err);
       } else {
-        console.log("Monthly data fetched:", results); // Log results
+        console.log("Monthly data fetched:", results);
       }
       callback(err, results);
     }
@@ -247,11 +244,35 @@ const getYearlyData = (callback) =>
       if (err) {
         console.error("Error fetching yearly data:", err);
       } else {
-        console.log("Yearly data fetched:", results); // Log results
+        console.log("Yearly data fetched:", results);
       }
       callback(err, results);
     }
   );
+
+// FUNCTION TO GET ALL ROWS FROM 'mileage_and_pay'
+const getAllMapRows = (callback) => {
+  pool.query("SELECT * FROM mileage_and_pay", (err, results) => {
+    if (err) {
+      console.error("SQL Error:", err);
+      return callback(err);
+    }
+    console.log("Query Results:", results);
+    callback(null, results);
+  });
+};
+
+// FUNCTION TO GET ROWS FOR SPECIFIC COMPANY
+const getMapRowsByCompany = (company, callback) => {
+  const query = "SELECT * FROM mileage_and_pay WHERE company = ?";
+  pool.query(query, [company], (err, results) => {
+    if (err) {
+      console.error("Error fetching map rows by company:", err);
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
+};
 
 module.exports = {
   insert_mileage_and_pay,
@@ -265,4 +286,6 @@ module.exports = {
   getWeeklyData,
   getMonthlyData,
   getYearlyData,
+  getAllMapRows,
+  getMapRowsByCompany,
 };
