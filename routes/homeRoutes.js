@@ -12,4 +12,7 @@ router.get("/sort/:type", homeControllers.getIntervalSortedData);
 //Route: daily info form
 router.post("/dailyInfoForm", customMiddleware.validateDailyInfoForm, homeControllers.postDailyInfoForm);
 
+// Route: mileage_and_pay rows
+router.get("/mapRows", homeControllers.getMapRows);
+
 module.exports = router;
