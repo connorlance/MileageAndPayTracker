@@ -90,9 +90,39 @@ const getMapRows = (req, res) => {
   }
 };
 
+// Controller: Delete MAP row by ID
+const deleteRow = (req, res) => {
+  const id = req.params.id;
+  const { date, totalMiles, pay } = req.body;
+
+  // Ensure all required data is available
+  if (!date || !totalMiles || !pay) {
+    return res.status(400).json({ error: "Missing required data" });
+  }
+
+  // Call the unified query function
+  query.deleteRowById(id, date, totalMiles, pay, (err) => {
+    if (err) {
+      console.error(`Error deleting row with ID ${id} and data ${date}, ${totalMiles}, ${pay}:`, err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    // Recalculate and fetch data after deletion
+    query.calculateTotalAvg();
+    query.getAllMapRows((err, results) => {
+      if (err) {
+        console.error("Error fetching updated MAP rows:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.status(200).json({ success: true, data: results });
+    });
+  });
+};
+
 module.exports = {
   getIndex,
   getIntervalSortedData,
   postDailyInfoForm,
   getMapRows,
+  deleteRow,
 };
