@@ -274,6 +274,64 @@ const getMapRowsByCompany = (company, callback) => {
   });
 };
 
+// FUNCTION TO REMOVE MAP ROW
+const deleteRowById = (id, date, total_miles, total_pay, callback) => {
+  const deleteMapRowQuery = `
+    DELETE FROM mileage_and_pay 
+    WHERE ID = ?;
+  `;
+
+  const deleteTotalAvgRowQuery = `
+    DELETE FROM total_avg_calculation 
+    WHERE start_date <= ? AND end_date >= ? AND total_miles = ? AND total_pay = ?;
+  `;
+
+  const updateTotalsQuery = `
+    UPDATE total_avg_calculation
+    SET total_miles = total_miles - ?, total_pay = total_pay - ?
+    WHERE start_date <= ? AND end_date >= ?;
+  `;
+
+  const deleteEmptyTotalsQuery = `
+    DELETE FROM total_avg_calculation
+    WHERE total_miles <= 0 AND total_pay <= 0;
+  `;
+
+  // delete the row from mileage_and_pay table
+  pool.query(deleteMapRowQuery, [id], (err) => {
+    if (err) {
+      console.error("Error deleting row from mileage_and_pay:", err);
+      return callback(err);
+    }
+
+    // delete the row from total_avg_calculation
+    pool.query(deleteTotalAvgRowQuery, [date, date, total_miles, total_pay], (err) => {
+      if (err) {
+        console.error("Error deleting row from total_avg_calculation:", err);
+        return callback(err);
+      }
+
+      // update totals
+      pool.query(updateTotalsQuery, [total_miles, total_pay, date, date], (err) => {
+        if (err) {
+          console.error("Error updating totals in total_avg_calculation:", err);
+          return callback(err);
+        }
+
+        // delete empty rows
+        pool.query(deleteEmptyTotalsQuery, (err) => {
+          if (err) {
+            console.error("Error deleting empty rows from total_avg_calculation:", err);
+            return callback(err);
+          }
+
+          callback(null);
+        });
+      });
+    });
+  });
+};
+
 module.exports = {
   insert_mileage_and_pay,
   calculateTotalAvg,
@@ -288,4 +346,5 @@ module.exports = {
   getYearlyData,
   getAllMapRows,
   getMapRowsByCompany,
+  deleteRowById,
 };
