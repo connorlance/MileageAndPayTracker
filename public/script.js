@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((data) => {
             console.log(data);
             fetchSortedPartial(currentIntervalSortMethod);
+            fetchMapRowsData(currentMapRowsMethod);
             this.querySelector("input[name='pay']").value = "";
             this.querySelector("select[name='company']").value = "";
           })
@@ -178,6 +179,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // MAP Rows delete button
+  document.getElementById("MapRowsData").addEventListener("click", async function (event) {
+    if (event.target.matches(".delete-btn")) {
+      const button = event.target;
+      const id = button.getAttribute("data-id");
+      const date = button.getAttribute("data-date");
+      const totalMiles = button.getAttribute("data-total-miles");
+      const pay = button.getAttribute("data-pay");
+
+      try {
+        // Send delete request
+        const response = await fetch(`/deleteRow/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ date, totalMiles, pay }),
+        });
+        fetchMapRowsData(highlightMapRowsButton);
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while deleting the row.");
+      }
+    }
+  });
   // insertCompanyForm
   if (document.getElementById("companyForm")) {
     document.getElementById("companyForm").addEventListener("submit", function (event) {
