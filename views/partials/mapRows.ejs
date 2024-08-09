@@ -7,10 +7,11 @@
       <th>Mileage Start</th>
       <th>Mileage End</th>
       <th>Pay</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <% data.forEach(row => { %>
+    <% data.reverse().forEach(row => { %>
     <tr>
       <td><%= row.ID %></td>
       <td><%= new Date(row.date).toLocaleDateString() %></td>
@@ -18,6 +19,11 @@
       <td><%= row.mileage_start %></td>
       <td><%= row.mileage_end %></td>
       <td><%= row.pay %></td>
+      <td>
+        <button class="delete-btn" data-id="<%= row.ID %>" data-date="<%= new Date(row.date).toISOString().split('T')[0] %>" data-total-miles="<%= row.total_miles %>" data-pay="<%= row.pay %>">
+          🗑️
+        </button>
+      </td>
     </tr>
     <% }); %>
   </tbody>
