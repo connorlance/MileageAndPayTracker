@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
     mileageStart = mileageStart.replace(/,/g, "");
     mileageEnd = mileageEnd.replace(/,/g, "");
 
+    // Update the form fields with the cleaned values
+    form.querySelector("input[name='mileageStart']").value = mileageStart;
+    form.querySelector("input[name='mileageEnd']").value = mileageEnd;
+
     return true;
   }
 
