@@ -4,8 +4,8 @@ const path = require("path");
 
 const defaultMiddlewareRouter = require("./middlewares/defaultMiddleware");
 
-const homeRoutes = require("./routes/homeRoutes");
-const optionsRoutes = require("./routes/optionsRoutes");
+const webRoutes = require("./routes/webRoutes");
+const apiRoutes = require("./routes/apiRoutes");
 
 //Create express app
 const app = express();
@@ -22,11 +22,11 @@ app.listen(3000);
 // Use the default middleware router
 app.use("/", defaultMiddlewareRouter);
 
-//main routes
-app.use(homeRoutes);
+//Web routes
+app.use(webRoutes);
 
-//api routes
-app.use(optionsRoutes);
+//API routes
+app.use(apiRoutes);
 
 //Route: 404
 app.use((req, res) => {
