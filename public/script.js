@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({ date, totalMiles, pay }),
           });
-          fetchMapRowsData(highlightMapRowsButton);
+          fetchMapRowsData(currentMapRowsMethod);
           fetchSortedPartial(currentIntervalSortMethod);
         } catch (error) {
           console.error("Error:", error);
