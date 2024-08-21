@@ -12,6 +12,9 @@ router.post("/dailyInfoForm", customMiddleware.validateDailyInfoForm, apiControl
 // Route: mileage_and_pay rows
 router.get("/mapRows", apiControllers.getMapRows);
 
+// Route: Update Map Rows Sort Buttons
+router.get("/mapRowsButtons", apiControllers.getMapRowsButtons);
+
 // Route: Delete MAP row by ID
 router.delete("/deleteRow/:id", apiControllers.deleteRow);
 
