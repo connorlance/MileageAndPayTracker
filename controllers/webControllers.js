@@ -14,12 +14,6 @@ const getIndex = (req, res) => {
   };
 };
 
-// Controller: options
-const getOptions = (req, res) => {
-  res.render("options");
-};
-
 module.exports = {
   getIndex,
-  getOptions,
 };
