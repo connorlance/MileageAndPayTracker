@@ -76,6 +76,26 @@ const getMapRows = (req, res) => {
   }
 };
 
+// Controller: Get Map Rows Buttons
+const getMapRowsButtons = (req, res) => {
+  query.getCompanyNames((err, companyNames) => {
+    if (err) {
+      console.error("Error fetching company names:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    res.render("partials/sortButtons", { companyNames: companyNames }, (err, html) => {
+      if (err) {
+        console.error("Error rendering sort buttons partial:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      res.send(html);
+    });
+  });
+};
+
 // Controller: Delete MAP row by ID
 const deleteRow = (req, res) => {
   const id = req.params.id;
@@ -153,6 +173,7 @@ module.exports = {
   getIntervalSortedData,
   postDailyInfoForm,
   getMapRows,
+  getMapRowsButtons,
   deleteRow,
   createCompany,
   getCompanyNames,
