@@ -234,7 +234,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
               alert(`${insertCompany} added successfully.`);
             }
-            updateRemoveCompanyDropdownMenu();
+            populateCompanyDropdowns();
+            fetchMapRowsData(currentMapRowsMethod);
+            fetchSortedPartial(currentIntervalSortMethod);
           })
           .catch((err) => console.error("Error: ", err));
         this.reset();
@@ -267,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
       if (validateRemoveCompanyForm()) {
-        const companyName = document.getElementById("companyDropdown").value;
+        const companyName = document.getElementById("removeCompanyDropdown").value;
 
         fetch("/removeCompany", {
           method: "DELETE",
@@ -279,7 +281,9 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-            updateRemoveCompanyDropdownMenu();
+            populateCompanyDropdowns();
+            fetchMapRowsData(currentMapRowsMethod);
+            fetchSortedPartial(currentIntervalSortMethod);
           })
           .catch((err) => console.error("Error: ", err));
         this.reset();
