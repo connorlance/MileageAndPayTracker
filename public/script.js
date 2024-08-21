@@ -218,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
 
       if (validateInsertCompanyForm()) {
-        const insertCompany = this.querySelector("input[name='insertCompany']").value;
         const formData = new FormData(this);
 
         fetch("/createCompany", {
@@ -229,12 +228,8 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((data) => {
             console.log(data);
 
-            if (data.exists) {
-              alert(`The company "${insertCompany}" already exists.`);
-            } else {
-              alert(`${insertCompany} added successfully.`);
-            }
             populateCompanyDropdowns();
+            fetchMapRowsButtons();
             fetchMapRowsData(currentMapRowsMethod);
             fetchSortedPartial(currentIntervalSortMethod);
           })
@@ -282,6 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((data) => {
             console.log(data);
             populateCompanyDropdowns();
+            fetchMapRowsButtons();
             fetchMapRowsData(currentMapRowsMethod);
             fetchSortedPartial(currentIntervalSortMethod);
           })
@@ -289,6 +285,15 @@ document.addEventListener("DOMContentLoaded", function () {
         this.reset();
       }
     });
+  }
+
+  function fetchMapRowsButtons() {
+    fetch("/mapRowsButtons")
+      .then((response) => response.text())
+      .then((html) => {
+        document.getElementById("mapRowsButtons").innerHTML = html;
+      })
+      .catch((error) => console.error("Error fetching map rwos buttons:", error));
   }
 
   // Populate the company dropdowns when the page loads
